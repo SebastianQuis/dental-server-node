@@ -6,7 +6,7 @@ const { generarJWT } = require('../helpers/jwt');
 
 const crearUsuario = async (req, res = response) => { 
 
-    const { email, password } = req.body; // extraer propiedades de req.body
+    const { email, dni, password } = req.body; // extraer propiedades de req.body
 
     try {
         const existeEmail = await Usuario.findOne({ email }); // si existe email en la bd
@@ -15,6 +15,14 @@ const crearUsuario = async (req, res = response) => {
                 ok: false,
                 message: 'El correo ya existe'
             });
+
+        const existeDNI = await Usuario.findOne({ dni });
+        if (existeDNI) {
+            return res.status(400).json({
+                ok: false,
+                message: 'El DNI ya está registrado'
+            });
+        }
 
         const usuario = new Usuario( req.body );
 
@@ -100,7 +108,8 @@ const getUsuarios = async ( req, res = response ) => {
          // const desde = Number( req.query.desde ) || 0;
 
         const usuarios = await Usuario.find({
-            rol: 'Odontologo'
+            rol: 'Odontologo',
+            disponible: true,
         });
         // .skip(desde)
         // .limit(20);
@@ -139,10 +148,40 @@ const eliminarUsuario = async ( req, res = response ) => {
 
 }
 
+const updateUsuario = async (req, res = response) => {
+    const { id } = req.params;
+
+    try {
+        const usuario = await Usuario.findByIdAndUpdate(id, {estado: false}, { new: true });
+
+        if (!usuario) {
+            return res.status(404).json({
+                ok: false,
+                message: 'Usuario no existe'
+            });
+        }
+
+        // paciente.edad = hallarEdad(paciente.nacimiento);
+
+        res.json({
+            ok: true,
+            usuario
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador',
+        });
+    }
+}
+
 module.exports = {
     crearUsuario,
     login,
     renewToken,
     getUsuarios,
-    eliminarUsuario
+    eliminarUsuario,
+    updateUsuario
 }

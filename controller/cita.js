@@ -4,10 +4,11 @@ const Cita = require('../models/cita');
 
 const crearCita = async (req, res = response) => {
     try {
-        const { fecha, horaInicial, horaFinal } = req.body;
+        const { fecha, horaInicial, horaFinal, odontologo } = req.body;
 
         // Verificar si ya existen citas en la misma fecha y colisionan con las horas
         const citasExistente = await Cita.find({
+            odontologo,
             fecha,
             $or: [
                 {
@@ -187,10 +188,39 @@ const findCita = async (req, res = response) => {
     }
 }
 
+const actualizarCita = async (req, res = response) => {
+    const { id } = req.params;
+
+    try {
+        const cita = await Cita.findByIdAndUpdate(id, req.body, { new: true });
+
+        if (!cita) {
+            return res.status(404).json({
+                ok: false,
+                message: 'Cita no existe'
+            });
+        }
+
+
+        res.json({
+            ok: true,
+            cita
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador',
+        });
+    }
+}
+
 module.exports = {
     crearCita,
     eliminarCita,
     getCitasPorFecha,
     getCitasCantidad,
-    findCita
+    findCita,
+    actualizarCita
 }

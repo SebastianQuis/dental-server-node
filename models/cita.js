@@ -31,6 +31,10 @@ const CitaSchema = Schema({
         type: String,
         required: true
     },
+    atendida: {
+        type: Boolean,
+        default: false
+    }
 });
 
 // sobre escribiendo el metodo toJSON

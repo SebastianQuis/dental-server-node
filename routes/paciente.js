@@ -13,7 +13,8 @@ const { validarJWT } = require("../middlewares/validar-jwt");
 
 const router = Router();
 
-router.post( '/new', [ // localhost:3000/api/paciente/new
+// localhost:3000/api/paciente/new
+router.post( '/new', [ 
 
     check('nombres', 'El nombre es obligatorio').not().isEmpty(),
     check('apellidos', 'El apellido es obligatorio').not().isEmpty(),
@@ -27,10 +28,13 @@ router.post( '/new', [ // localhost:3000/api/paciente/new
     validarCampos
 ], crearPaciente);
 
-router.get( '/pacientes', validarJWT, getPacientes) // localhost:3000/api/paciente/pacientes
+// localhost:3000/api/paciente/pacientes
+router.get( '/pacientes', validarJWT, getPacientes) 
 
-router.put( '/actualiza/:id', validarJWT, updatePaciente) // localhost:3000/api/paciente/actualiza/asdasd
+// localhost:3000/api/paciente/actualiza/asdasd
+router.put( '/actualiza/:id', validarJWT, updatePaciente) 
 
-router.get( '/search/:key', findPaciente) // localhost:3000/api/paciente/search/asdasd
+// localhost:3000/api/paciente/search/asdasd
+router.get( '/search/:key', findPaciente)
 
 module.exports = router;

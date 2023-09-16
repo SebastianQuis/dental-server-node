@@ -31,7 +31,11 @@ const UsuarioSchema = Schema({
     online: {
         type: Boolean,
         default: false
-    }
+    },
+    disponible: {
+        type: Boolean,
+        default: true
+    },
 });
 
 // sobre escribiendo el metodo toJSON

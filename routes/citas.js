@@ -7,7 +7,7 @@
  const { Router } = require("express");
  const { check } = require("express-validator");
 
- const { crearCita, eliminarCita, getCitasPorFecha, getCitasCantidad, findCita } = require("../controller/cita");
+ const { crearCita, eliminarCita, getCitasPorFecha, getCitasCantidad, findCita, actualizarCita } = require("../controller/cita");
  const { validarCampos } = require("../middlewares/validar-campo");
 const { existeCitaPorID } = require("../middlewares/valida-cita");
 const { validarJWT } = require("../middlewares/validar-jwt");
@@ -24,7 +24,7 @@ router.post( '/new', [
     check('nota', 'El fecha es obligatorio').isLength({ min: 4}),
     check('fecha', 'La nota de nacimiento es obligatorio').not().isEmpty(),
     check('telefono', 'El telefono es obligatorio').not().isEmpty(),
-
+    // check('atendida', 'El estado atendido es obligatorio').not().isEmpty(),
     validarCampos
 ], crearCita );
 
@@ -43,6 +43,9 @@ router.get('/cantidad/odontologo/:odontologo', validarJWT, getCitasCantidad);
 
 // localhost:3000/api/citas/search/Darwin
 router.get('/search/:key', findCita); 
+
+// localhost:3000/api/citas/actualiza/:id
+router.put('/actualiza/:id', validarJWT, actualizarCita);
 
 module.exports = router;
 

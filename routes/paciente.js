@@ -18,9 +18,9 @@ router.post( '/new', [
 
     check('nombres', 'El nombre es obligatorio').not().isEmpty(),
     check('apellidos', 'El apellido es obligatorio').not().isEmpty(),
-    check('telefono', 'El telefono es obligatorio').not().isEmpty(), 
+    check('telefono', 'El telefono es obligatorio y debe tener 9 dígitos').isLength({ min: 9, max: 9 }),
     check('genero', 'El genero es obligatorio').not().isEmpty(),
-    check('dni', 'El dni es obligatorio').not().isEmpty(), // chequear cantidad de digitos 8
+    check('dni', 'El dni es obligatorio y debe tener 8 dígitos').isLength({ min: 8, max: 8 }), // chequear cantidad de digitos 8
     check('nacimiento', 'La fecha de nacimiento es obligatorio').not().isEmpty(), // chequear datetime - 14/09/2022  15-09-2022 14:00
     check('tratamiento', 'El tratamiento es obligatorio').isLength({ min: 5}),
     check('odontologo', 'El odontologo es obligatorio').not().isEmpty(),
